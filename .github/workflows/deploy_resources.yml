@@ -29,11 +29,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
       
-      # lambda layerフォルダを作成
-      - name: Create lambda layer
-        run: |
-          pip install -qr ./src/layer/python/requirements.txt --target layer/python
-      
       # deployBucketの生成
       - name: Create DeployBucket
         uses: ./.github/actions/deployBucket
