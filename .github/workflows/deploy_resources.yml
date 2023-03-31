@@ -36,8 +36,8 @@ jobs:
       # Parameter override用の変数ファイルの作成
       - name: generate .samEnv
         run: |
-          echo OPENAI_TOKEN=${{ secrets.OPENAI_TOKEN }} >> .samEnv
-          echo SLACK_TOKEN=${{ secrets.SLACK_TOKEN }} >> .samEnv
+          echo OpenToken=${{ secrets.OPENAI_TOKEN }} >> .samEnv
+          echo SlackToken=${{ secrets.SLACK_TOKEN }} >> .samEnv
           
       # sam build
       - name: sam build
