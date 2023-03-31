@@ -13,9 +13,26 @@ SLACK_API_TOKEN = os.environ["SLACK_TOKEN"]
 openai.api_key = OPENAI_API_KEY
 slack_client = WebClient(token=SLACK_API_TOKEN)
 
+system_parameter = """```
+あなたは1流のAI研究者です。
+以下の制約条件と、入力された文章をもとに最高の要約を作成してください。
+
+制約条件:
+・文章は簡潔かつ分かりやすく書くこと。
+・箇条書きで3行で出力すること。
+・要約した文章は違和感のない日本語に翻訳すること。
+
+期待する出力フォーマット:
+・
+・
+・
+
+```"""
 
 # 論文を検索して要約する関数
-def search_and_summarize_papers(query, num_papers=3, slack_channel="#general"):
+
+
+def search_and_summarize_papers(query, num_papers, slack_channel):
     # arXiv APIで論文を検索
     search_results = arxiv.Search(
         query=query, max_results=num_papers, sort_by=arxiv.SortCriterion.Relevance)
@@ -31,13 +48,15 @@ def search_and_summarize_papers(query, num_papers=3, slack_channel="#general"):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "user", "content": f"Please summarize the following abstract in Japanese:\n{abstract}"}
+                {"role": "system", "content": system_parameter},
+                {"role": "user", "content": abstract},
             ]
         )
         summary = response["choices"][0]["message"]["content"]
 
         # 要約を含むメッセージをSlackに送信
-        message = f"Title: {title}\nURL: {url}\nSummary: {summary}"
+        bar_line = '-' * 100
+        message = f"Title: {title}\nURL: {url}\nSummary: \n{summary}\n{bar_line}"
         try:
             response = slack_client.chat_postMessage(
                 channel=slack_channel, text=message)
@@ -49,7 +68,7 @@ def search_and_summarize_papers(query, num_papers=3, slack_channel="#general"):
 def lambda_handler(event, context):
     # EventBridgeイベントから検索クエリを取得
     query = event["query"]  # デフォルトの検索クエリを設定
-    num_papers = event["num_papers"]  # デフォルトの取得論文数を設定
+    num_papers = int(event["num_papers"])  # デフォルトの取得論文数を設定
     slack_channel = event["slack_channel"]  # デフォルトのSlackチャンネルを設定
 
     search_and_summarize_papers(
