@@ -1,0 +1,48 @@
+name: deploy-sam-application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkoout
+        uses: actions/checkout@v2
+
+      - name: python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - uses: aws-actions/setup-sam@v2
+        with:
+          version: 1.59.0
+      
+      #AWS環境への認証
+      - name: aws configure
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      
+      # deployBucketの生成
+      - name: Create DeployBucket
+        uses: ./.github/actions/deployBucket
+      
+      # Parameter override用の変数ファイルの作成
+      - name: generate .samEnv
+        run: |
+          echo OPENAI_TOKEN=${{ secrets.OPENAI_TOKEN }} >> .samEnv
+          echo SLACK_TOKEN=${{ secrets.SLACK_TOKEN }} >> .samEnv
+          
+      # sam build
+      - name: sam build
+        uses: ./.github/actions/sam-build
+
+      # sam deploy
+      - name: sam deploy
+        uses: ./.github/actions/sam-deploy

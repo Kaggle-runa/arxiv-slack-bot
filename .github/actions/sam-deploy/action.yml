@@ -1,0 +1,12 @@
+name: "sam-deploy"
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        sam deploy --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --stack-name deploy-resources-${GITHUB_REF#refs/heads/} \
+            --s3-bucket deploy-bucket-${GITHUB_REF#refs/heads/} \
+            --parameter-overrides $(cat .samEnv)
+      shell: bash

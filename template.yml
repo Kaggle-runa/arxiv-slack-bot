@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Creating basic backend environment.
+Parameters:
+  OPENAI_TOKEN:
+    Description: "Your environment name here"
+    Type: String
+  SLACK_TOKEN:
+    Description: "auth api path"
+    Type: String
+  
+Globals:
+  Function:
+    Timeout: 20
+    Runtime: python3.9
+    MemorySize: 512
+    CodeUri: ./src
+
+Resources:
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub common-layer-${EnvName}
+      Description: Common Application Resource Layer
+      ContentUri: ./src/layer
+  
+  SlackBotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "arxiv-slack-bot"
+      Handler: arxiv-bot.lambda_handler
+      Environment:
+        Variables:
+          OPENAI_TOKEN: !Ref OPENAI_TOKEN
+          SLACK_TOKEN: !Ref SLACK_TOKEN
+      Events:
+        DailyTrigger:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
+            Input: '{"query": "deep learning", "num_papers": 3, "slack_channel": "#your-slack-channel"}'
+
+  

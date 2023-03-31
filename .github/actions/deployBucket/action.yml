@@ -1,0 +1,10 @@
+name: "sam-build"
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        aws cloudformation deploy \
+          --stack-name create-s3-for-deploy-${GITHUB_REF#refs/heads/}\
+          --region ap-northeast-1 \
+          --template-file ./resourses/cfn/deployBucket.yml 
+      shell: bash

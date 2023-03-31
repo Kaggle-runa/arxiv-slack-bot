@@ -1,0 +1,8 @@
+name: "sam-build"
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        sam build --parameter-overrides $(cat .samEnv)
+      shell: bash
