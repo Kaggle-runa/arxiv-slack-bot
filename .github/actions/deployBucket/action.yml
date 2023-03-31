@@ -4,7 +4,7 @@ runs:
   steps:
     - run: |
         aws cloudformation deploy \
-          --stack-name create-s3-for-deploy-${GITHUB_REF#refs/heads/}\
+          --stack-name deploy-bucket-${GITHUB_REF#refs/heads/}\
           --region ap-northeast-1 \
           --template-file ./resourses/deployBucket.yml 
       shell: bash
