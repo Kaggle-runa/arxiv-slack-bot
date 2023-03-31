@@ -8,6 +8,5 @@ runs:
             --no-fail-on-empty-changeset \
             --stack-name deploy-resources-${GITHUB_REF#refs/heads/} \
             --s3-bucket deploy-bucket-arvix-runa-kaggle \
-            --parameter-overrides $(cat .samEnv) \
-            --capabilities CAPABILITY_NAMED_IAM
+            --parameter-overrides $(cat .samEnv) 
       shell: bash
