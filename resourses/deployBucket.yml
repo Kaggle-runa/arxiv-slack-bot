@@ -1,14 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
-Parameters:
-  EnvName:
-    Description: "Your environment name here"
-    Type: String
-    Default: defalt
-
 Resources:
   MyBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "arvix-deploy-bucket"
+      BucketName: !Sub "deploy-bucket-arvix-runa-kaggle"
