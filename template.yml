@@ -21,7 +21,7 @@ Resources:
   CommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: !Sub common-layer-${EnvName}
+      LayerName: !Sub common-layer
       Description: Common Application Resource Layer
       ContentUri: src/layer
   
