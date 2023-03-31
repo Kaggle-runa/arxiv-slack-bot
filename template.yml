@@ -15,7 +15,6 @@ Globals:
     Timeout: 20
     Runtime: python3.9
     MemorySize: 512
-    CodeUri: ./src
 
 Resources:
   CommonLayer:
@@ -23,13 +22,14 @@ Resources:
     Properties:
       LayerName: !Sub common-layer-${EnvName}
       Description: Common Application Resource Layer
-      ContentUri: ./layer
+      ContentUri: src/layer
   
   SlackBotFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "arxiv-slack-bot"
       Handler: arxiv-bot.lambda_handler
+      ContentUri: src/layer
       Environment:
         Variables:
           OPENAI_TOKEN: !Ref OpenToken
