@@ -23,6 +23,7 @@ Resources:
     Properties:
       LayerName: !Sub common-layer-${EnvName}
       Description: Common Application Resource Layer
+      ContentUri: ./layer
   
   SlackBotFunction:
     Type: AWS::Serverless::Function
