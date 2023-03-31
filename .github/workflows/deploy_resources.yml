@@ -32,7 +32,7 @@ jobs:
       # lambda layerフォルダを作成
       - name: Create lambda layer
         run: |
-          pip install -qr ./src/layer/python/requirements.txt
+          pip install -qr ./src/layer/python/requirements.txt --use-pep517
       
       # deployBucketの生成
       - name: Create DeployBucket
