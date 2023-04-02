@@ -1,5 +1,6 @@
 import re
 import PyPDF2
+from PyPDF2 import PdfReader
 import urllib.request
 from io import BytesIO
 import openai
@@ -17,7 +18,7 @@ openai.api_key = OPENAI_API_KEY
 slack_client = WebClient(token=SLACK_API_TOKEN)
 
 system_parameter = """```
-あなたは一流のデータサイエンティスト兼AI研究者です。
+あなたは一流のAI研究者です。
 以下の制約条件と、入力された文章をもとに最高の要約を作成してください。
 
 # 制約条件:
@@ -27,10 +28,14 @@ system_parameter = """```
 ・要約した文章は違和感のない日本語に翻訳すること。
 
 # 期待する出力フォーマット:
-・
-・
-・
+①
+②
+③
 
+# 出力例
+①深層学習の過去、現在、未来について説明されている。
+②深層学習と皮質学習の収束により、人工的な皮質カラムが最終的に構築されると予測されている。
+③本研究からは、深部皮質学習が注目されることが確認された。
 ```"""
 
 
@@ -47,9 +52,9 @@ def extract_git_url(pdf_url):
         with urllib.request.urlopen(pdf_url) as response:
             pdf_data = response.read()
             pdf_file = BytesIO(pdf_data)
-            reader = PyPDF2.PdfFileReader(pdf_file)
-            for page_num in range(reader.numPages):
-                page = reader.getPage(page_num)
+            reader = PdfReader(pdf_file)
+            for page_num in range(len(reader.pages)):
+                page = reader.pages[page_num]
                 text = page.extract_text()
                 match = re.search(r'https?://github.com[^\s]+', text)
                 if match:
