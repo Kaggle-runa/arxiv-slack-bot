@@ -12,7 +12,7 @@ Parameters:
   
 Globals:
   Function:
-    Timeout: 20
+    Timeout: 300
     Runtime: python3.9
     MemorySize: 512
     CodeUri: ./src
