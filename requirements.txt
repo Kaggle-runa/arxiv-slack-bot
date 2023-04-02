@@ -1,3 +1,4 @@
 openai 
 slack-sdk 
 arxiv
+PyPDF2
