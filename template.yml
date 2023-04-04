@@ -41,4 +41,4 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: cron(0 0 * * ? *)
-            Input: '{"query": "deep learning", "num_papers": 3, "slack_channel": "C03JXFPCL6S"}'  
+            Input: '{"num_papers": 3, "slack_channel": "C03JXFPCL6S"}'  
