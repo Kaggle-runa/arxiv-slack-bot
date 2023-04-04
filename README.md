@@ -17,5 +17,5 @@ arxiv APIとopenai APIを利用して毎日定期的に新規の論文をslack�
 必要なライブラリが増えるたびに以下のコマンドを入力してください
 
 ```
-pip install -t src/layer/python openai slack-sdk arxiv
+pip install -t src/layer/python モジュール名
 ```
