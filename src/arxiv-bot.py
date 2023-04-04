@@ -125,11 +125,11 @@ def search_and_summarize_papers(query, num_papers, slack_channel):
 
         # 要約を含むメッセージをSlackに送信
         bar_line = '-' * 100
-        message = f"Title: {title}\nURL: {url}\nSummary: \n{summary}\n{bar_line}"
+        message = f"Title: {title}\nURL: {url}\nSummary: \n{summary}"
 
         # git_urlが存在する場合はslackに送るメッセージに付与
         if git_url:
-            message += f"\nGit URL: {git_url}"
+            message += f"{bar_line}\nGit URL: {git_url}"
         message += f"\n{bar_line}"
 
         try:
